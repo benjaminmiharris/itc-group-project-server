@@ -1,4 +1,8 @@
+require("dotenv").config();
 const express = require("express");
+const { initDB } = require("./models/init");
+initDB();
+
 const app = express();
 
 app.post("/test", (req, res) => {
