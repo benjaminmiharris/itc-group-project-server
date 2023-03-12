@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const PropertiesController = require("./controllers/PropertiesController");
 const { initDB } = require("./models/init");
 initDB();
 
@@ -13,6 +14,8 @@ app.post("/test", (req, res) => {
     message: "successful",
   });
 });
+
+app.get("/search", PropertiesController.searchProperties);
 
 app.listen(3002, async () => {
   console.log("Server is running on port 3002");
