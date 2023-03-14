@@ -13,7 +13,7 @@ module.exports = class PropertiesController {
     } catch (error) {
       return res.status(400).json({
         success: false,
-        message: error,
+        message: `Error retrieving property search data - ${error}`,
       });
     }
   };
