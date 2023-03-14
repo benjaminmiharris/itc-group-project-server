@@ -2,18 +2,30 @@ require("dotenv").config();
 const express = require("express");
 const PropertiesController = require("./controllers/PropertiesController");
 const { initDB } = require("./models/init");
+const {
+  S3PropertyUploadMiddleware,
+} = require("./middlewares/S3PropertyImageUpload");
+
 initDB();
-
 const app = express();
+app.use(express.json());
 
-app.post("/test", (req, res) => {
-  console.log("Server is working");
+const multer = require("multer");
+const storage = multer.memoryStorage({});
+const upload = multer({ storage: storage });
 
-  return res.status(200).send({
-    success: true,
-    message: "successful",
-  });
-});
+app.post(
+  "/test",
+  [upload.single("image"), S3PropertyUploadMiddleware],
+  (req, res) => {
+    console.log("Server is working");
+
+    return res.status(200).send({
+      success: true,
+      message: "successful",
+    });
+  }
+);
 
 app.get("/search", PropertiesController.searchProperties);
 app.get("/search/:id", PropertiesController.getSinglePropertyById);
