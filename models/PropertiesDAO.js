@@ -1,4 +1,4 @@
-// const { ObjectId } = require("mongodb");
+const { ObjectId } = require("mongodb");
 
 let propertiesCollection;
 
@@ -16,5 +16,11 @@ module.exports = class PropertiesDAO {
 
   static async getProperties(query) {
     return await propertiesCollection.find(query).toArray();
+  }
+
+  static async getPropertyById(propertyId) {
+    return await propertiesCollection.findOne({
+      _id: new ObjectId(propertyId),
+    });
   }
 };
