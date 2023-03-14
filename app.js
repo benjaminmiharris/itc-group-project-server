@@ -16,6 +16,7 @@ app.post("/test", (req, res) => {
 });
 
 app.get("/search", PropertiesController.searchProperties);
+app.get("/search/:id", PropertiesController.getSinglePropertyById);
 
 app.listen(3002, async () => {
   console.log("Server is running on port 3002");

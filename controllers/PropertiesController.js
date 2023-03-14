@@ -17,4 +17,21 @@ module.exports = class PropertiesController {
       });
     }
   };
+
+  static getSinglePropertyById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const response = await PropertiesDAO.getPropertyById(id);
+      return res.status(200).json({
+        success: true,
+        message: response,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: `Error retrieving property ${id} - ${error}`,
+      });
+    }
+  };
 };
