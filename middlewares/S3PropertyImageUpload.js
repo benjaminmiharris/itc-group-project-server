@@ -8,9 +8,12 @@ const s3 = new AWS.S3({
 
 module.exports.S3PropertyUploadMiddleware =
   async function S3PropertyUploadMiddleware(req, res, next) {
+    //property image
     const file = req.file;
+    //property object data
+    const text = req.body.text;
 
-    console.log(file);
+    req.body = JSON.parse(text);
 
     try {
       if (typeof file === "undefined") {
@@ -29,6 +32,8 @@ module.exports.S3PropertyUploadMiddleware =
           console.error(err);
           return res.status(500).send(err);
         }
+
+        req.file = data.Location;
 
         next();
       });

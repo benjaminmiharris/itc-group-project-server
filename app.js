@@ -11,6 +11,7 @@ const app = express();
 app.use(express.json());
 
 const multer = require("multer");
+const { addProperty } = require("./controllers/PropertiesController");
 const storage = multer.memoryStorage({});
 const upload = multer({ storage: storage });
 
@@ -29,6 +30,11 @@ app.post(
 
 app.get("/search", PropertiesController.searchProperties);
 app.get("/search/:id", PropertiesController.getSinglePropertyById);
+app.post(
+  "/create-property",
+  [upload.single("image"), S3PropertyUploadMiddleware],
+  PropertiesController.addProperty
+);
 
 app.listen(3002, async () => {
   console.log("Server is running on port 3002");

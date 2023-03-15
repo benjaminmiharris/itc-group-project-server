@@ -23,4 +23,9 @@ module.exports = class PropertiesDAO {
       _id: new ObjectId(propertyId),
     });
   }
+
+  static async createProperty(propertyData) {
+    propertyData.created_on = new Date();
+    await propertiesCollection.insertOne({ ...propertyData });
+  }
 };

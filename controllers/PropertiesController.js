@@ -1,4 +1,5 @@
 const PropertiesDAO = require("../models/PropertiesDAO");
+const { PropertyValidation } = require("../validations/PropertyValidation");
 
 module.exports = class PropertiesController {
   static searchProperties = async (req, res) => {
@@ -31,6 +32,32 @@ module.exports = class PropertiesController {
       return res.status(400).json({
         success: false,
         message: `Error retrieving property ${id} - ${error}`,
+      });
+    }
+  };
+
+  static addProperty = async (req, res) => {
+    try {
+      const isValid = PropertyValidation(req.body);
+
+      if (!isValid) {
+        return res.status(400).json({
+          success: false,
+          message: "Error creating property as object invalid.",
+        });
+      }
+
+      const propertyObject = req.body;
+      propertyObject.property_image = req.file;
+
+      await PropertiesDAO.createProperty(propertyObject);
+      return res
+        .status(200)
+        .json({ success: true, message: "Property created." });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: "Error creating property.",
       });
     }
   };
