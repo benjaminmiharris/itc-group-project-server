@@ -1,23 +1,32 @@
 require("dotenv").config();
-const express = require("express");
-const PropertiesController = require("./controllers/PropertiesController");
-const { initDB } = require("./models/init");
-initDB();
-
+const express = require('express');
 const app = express();
+const { initDB } = require("./init");
+initDB();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
-app.post("/test", (req, res) => {
-  console.log("Server is working");
 
-  return res.status(200).send({
-    success: true,
-    message: "successful",
-  });
-});
+const userController = require('./controllers/userController');
 
-app.get("/search", PropertiesController.searchProperties);
-app.get("/search/:id", PropertiesController.getSinglePropertyById);
 
-app.listen(3002, async () => {
-  console.log("Server is running on port 3002");
-});
+// checked
+app.post('/register', userController.register); 
+// cheked
+app.post('/login', userController.login);
+//  cheked --whitout .param
+app.put('/resetPassword', userController.resetPassword);
+// cheked --whitout .param | sendingx2
+app.get('/getUserById', userController.getUserById);
+// cheked --whitout .param | sendingx2
+app.put('/updateUser', userController.updateUser);
+// cheked --whitout .param
+app.delete('/deleteUser', userController.deleteUserByEmail);
+// checked 
+app.put('/updateUserProperty', userController.updateUserProperty);
+
+
+
+
+const PORT = 4000;
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));

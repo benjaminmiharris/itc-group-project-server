@@ -1,12 +1,12 @@
 const { ObjectId } = require("mongodb");
 
-let propertiesCollection;
+let properties;
 
 module.exports = class PropertiesDAO {
   static async injectDB(connection) {
     if (!connection) return;
     try {
-      propertiesCollection = await connection.collection("Properties");
+      properties = await connection.collection("Properties");
     } catch (e) {
       console.log(
         `Could not establish connection to Properties collection ${e}`
@@ -15,11 +15,11 @@ module.exports = class PropertiesDAO {
   }
 
   static async getProperties(query) {
-    return await propertiesCollection.find(query).toArray();
+    return await properties.find(query).toArray();
   }
 
   static async getPropertyById(propertyId) {
-    return await propertiesCollection.findOne({
+    return await properties.findOne({
       _id: new ObjectId(propertyId),
     });
   }
