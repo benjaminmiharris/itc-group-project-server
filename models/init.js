@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 const userDAO = require('../dao/userDAO');
-const propertyDAO = require('../dao/propertyDAO');
+const propertyDAO = require('./propertyDAO');
 
 
 module.exports.initDB = async function initDB() {

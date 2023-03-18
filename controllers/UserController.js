@@ -1,20 +1,20 @@
 const userDAO = require('../dao/userDAO');
-const propertyDAO = require('../dao/propertyDAO')
+const propertyDAO = require('../models/propertyDAO')
 
 const register = async (req, res) => {
-const { firstName, lastName, email, password, confirmPassword, mobile, role } = req.body;
-if (!firstName || !lastName || !email || !password || !confirmPassword || !mobile || !role) {
-  return res.status(400).json({ message: 'All fields are required' });
-}
-if (password !== confirmPassword) {
-  return res.status(400).json({ message: 'Passwords do not match' });
-}
-const existingUser = await userDAO.getUserByEmail(email);
-if (existingUser) {
-  return res.status(400).json({ message: 'User already exists with this email' });
-}
-const newUser = await userDAO.createUser({ firstName, lastName, email, password, confirmPassword, mobile, role });
-res.status(201).json(newUser);
+  const { firstName, lastName, email, password, confirmPassword, mobile, role } = req.body;
+  if (!firstName || !lastName || !email || !password || !confirmPassword || !mobile || !role) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+  if (password !== confirmPassword) {
+    return res.status(400).json({ message: 'Passwords do not match' });
+  }
+  const existingUser = await userDAO.getUserByEmail(email);
+  if (existingUser) {
+    return res.status(400).json({ message: 'User already exists with this email' });
+  }
+  const newUser = await userDAO.createUser({ firstName, lastName, email, password, confirmPassword, mobile, role });
+  res.status(201).json(newUser);
 };
 
 
@@ -104,11 +104,13 @@ const updateUserProperty = async (req, res) => {
 };
 
 
-module.exports = 
-          {register, 
-           login, 
-           getUserById, 
-           resetPassword, 
-           updateUser, 
-           deleteUserByEmail,
-           updateUserProperty};
+module.exports =
+{
+  register,
+  login,
+  getUserById,
+  resetPassword,
+  updateUser,
+  deleteUserByEmail,
+  updateUserProperty
+};

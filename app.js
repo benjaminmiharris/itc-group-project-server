@@ -11,7 +11,7 @@ const {
 } = require("./middlewares/S3PropertyImageUpload");
 
 initDB();
-const express = require('express');
+
 const app = express();
 app.use(express.json());
 
