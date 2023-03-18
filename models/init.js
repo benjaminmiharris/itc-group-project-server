@@ -1,11 +1,18 @@
 const { MongoClient } = require("mongodb");
-const PropertiesDAO = require("./PropertiesDAO");
+const userDAO = require('../dao/userDAO');
+const propertyDAO = require('../dao/propertyDAO');
+
 
 module.exports.initDB = async function initDB() {
-  MongoClient.connect(process.env.MONGODB_URI)
+  MongoClient.connect(process.env.MONGODB_URI, {
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000
+  })
     .then(async (connection) => {
       console.log("Connection to DB established");
-      await PropertiesDAO.injectDB(connection.db(process.env.DB));
+      await userDAO.injectDB(connection.db(process.env.DB));
+      await propertyDAO.injectDB(connection.db(process.env.DB));
 
       return;
     })
