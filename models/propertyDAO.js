@@ -15,23 +15,56 @@ module.exports = class PropertiesDAO {
   }
 
   static async getProperties(query) {
-    return await properties.find(query).toArray();
+    try {
+      return await properties.find(query).toArray();
+    } catch (error) {
+      console.error(`Error occurred while getting all properties, ${error}`);
+      return { error: error };
+    }
   }
 
   static async getPropertyById(propertyId) {
-    return await properties.findOne({
-      _id: new ObjectId(propertyId),
-    });
+    try {
+      return await properties.findOne({
+        _id: new ObjectId(propertyId),
+      });
+    } catch (error) {
+      console.error(`Error occurred while getting a property, ${error}`);
+      return { error: error };
+    }
   }
 
   static async createProperty(propertyData) {
-    propertyData.created_on = new Date();
-    await properties.insertOne({ ...propertyData });
+    try {
+      propertyData.created_on = new Date();
+      await properties.insertOne({ ...propertyData });
+    } catch (error) {
+      console.error(`Error occurred while creating new property, ${error}`);
+      return { error: error };
+    }
   }
 
   static async deletePropertyById(propertyId) {
-    await properties.deleteOne({
-      _id: new ObjectId(propertyId),
-    });
+    try {
+      await properties.deleteOne({
+        _id: new ObjectId(propertyId),
+      });
+    } catch (error) {
+      console.error(`Error occurred while deleting a property, ${error}`);
+      return { error: error };
+    }
+  }
+
+  static async updatePropertyById(propertyId, propertyObject) {
+    try {
+      await properties.findOneAndUpdate(
+        { _id: new ObjectId(propertyId) },
+        { $set: propertyObject },
+        { returnOriginal: false }
+      );
+    } catch (error) {
+      console.error(`Error occurred while updating a property, ${error}`);
+      return { error: error };
+    }
   }
 };
