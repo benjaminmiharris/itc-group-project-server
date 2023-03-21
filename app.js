@@ -2,10 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const PropertiesController = require("./controllers/PropertiesController");
 const userController = require("./controllers/userController");
-// const bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 const app = express();
 app.use(express.json());
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 const { initDB } = require("./models/init");
 const {
@@ -33,6 +33,8 @@ app.delete(
   "/deleteProperty/:id",
   PropertiesController.deleteSinglePropertyById
 );
+
+app.put("/update-property/:id", PropertiesController.updateSinglePropertyById);
 
 // checked
 app.post("/register", userController.register);
